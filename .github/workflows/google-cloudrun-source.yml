@@ -43,7 +43,9 @@
 #   Cloud Run IAM permissions           - https://cloud.google.com/run/docs/deploying-source-code#permissions_required_to_deploy
 #   Cloud Run builds from source        - https://cloud.google.com/run/docs/deploying-source-code
 #   Principle of least privilege        - https://cloud.google.com/blog/products/identity-security/dont-get-pwned-practicing-the-principle-of-least-privilege
-
+              - name: Authenticate to Google Cloud
+                uses: google-github-actions/auth@v2.1.3
+            
 name: Deploy to Cloud Run from Source
 
 on:
@@ -66,14 +68,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Google Auth
-        id: auth
-        uses: 'google-github-actions/auth@v0'
-        with:
-          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
-          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
-
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2.1.3
+       
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
       #   id: auth
